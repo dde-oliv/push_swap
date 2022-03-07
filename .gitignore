@@ -1,0 +1,13 @@
+#objs 
+objs/*
+.dependencies/printf/*.o
+.dependencies/libft/*.o
+.dependencies/printf/libft/*.o
+
+#libs
+.dependencies/printf/*.a
+.dependencies/printf/libft/*.a
+.dependencies/libft/*.a
+
+#push_swap
+push_swap
