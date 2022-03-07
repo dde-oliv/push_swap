@@ -6,23 +6,11 @@
 /*   By: dde-oliv <dde-oliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 15:45:18 by dde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/22 14:51:08 by dde-oliv         ###   ########.fr       */
+/*   Updated: 2022/03/07 12:41:06 by dde-oliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	ft_strlen(char *str)
-{
-	int	size;
-
-	size = 0;
-	while (str[size] != '\0')
-	{
-		size++;
-	}
-	return (size);
-}
 
 int	is_base(char *str)
 {
