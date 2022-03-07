@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   operations.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dde-oliv <dde-oliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 12:23:05 by dde-oliv          #+#    #+#             */
-/*   Updated: 2022/03/07 14:23:14 by dde-oliv         ###   ########.fr       */
+/*   Created: 2022/03/07 14:21:45 by dde-oliv          #+#    #+#             */
+/*   Updated: 2022/03/07 15:11:51 by dde-oliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#ifndef OPERATIONS_H
+# define OPERATIONS_H
+
 # include "../.dependencies/libft/libft.h"
 # include "../.dependencies/printf/ft_printf.h"
-# include "init_check.h"
-# include "operations.h"
+
+void swap(t_list **stack);
+
+void rotate(t_list **stack);
+
+void reverse_rotate(t_list **stack);
+
+void push(t_list **stack_out, t_list **stack_in);
 
 #endif

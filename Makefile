@@ -6,14 +6,15 @@
 #    By: dde-oliv <dde-oliv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/07 09:35:37 by dde-oliv          #+#    #+#              #
-#    Updated: 2022/03/07 14:18:26 by dde-oliv         ###   ########.fr        #
+#    Updated: 2022/03/07 14:41:55 by dde-oliv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	clang
 SRC_PATH	=	src
 SRC_FILES 	= 	$(SRC_PATH)/main.c \
-				$(SRC_PATH)/init_check.c
+				$(SRC_PATH)/init_check.c \
+				$(SRC_PATH)/operations.c
 OBJS_PATH	=	objs
 OBJS 		=	$(addprefix $(OBJS_PATH)/,$(notdir $(SRC_FILES:.c=.o))) \
 				$(addprefix $(OBJS_PATH)/,$(notdir $(UTILS_FILES:.c=.o)))
