@@ -12,6 +12,11 @@
 
 #include "../includes/push_swap.h"
 
+int get_stack_content(t_list *stack)
+{
+	return *((int *)(stack->content));
+}
+
 void	print_stack(t_list *stack)
 {
 	t_list	*ptr;
@@ -19,7 +24,7 @@ void	print_stack(t_list *stack)
 	ptr = stack;
 	while (ptr)
 	{
-		ft_printf("%s\n", ptr->content);
+		ft_printf("%d\n", get_stack_content(ptr));
 		ptr = ptr->next;
 	}
 }
@@ -35,18 +40,18 @@ void	print_stacks(t_list *stack_a, t_list *stack_b)
 	{
 		if (ptr_a && ptr_b)
 		{
-			ft_printf("%s\t%s\n", ptr_a->content, ptr_b->content);
+			ft_printf("%d\t%d\n", *((int *)(ptr_a->content)), *((int *)(ptr_b->content)));
 			ptr_a = ptr_a->next;
 			ptr_b = ptr_b->next;
 		}
 		else if (ptr_a)
 		{
-			ft_printf("%s\t\n",  ptr_a->content);
+			ft_printf("%d\t\n",  *((int *)(ptr_a->content)));
 			ptr_a = ptr_a->next;		
 		}
 		else
 		{
-			ft_printf("  \t%s\n",  ptr_b->content);
+			ft_printf("  \t%d\n",  *((int *)(ptr_b->content)));
 			ptr_b = ptr_b->next;
 		}		
 	}
@@ -54,10 +59,10 @@ void	print_stacks(t_list *stack_a, t_list *stack_b)
 
 void first_order(t_list **stack_a, t_list **stack_b)
 {
-	if (*stack_a && ft_atoi((*stack_a)->content) > ft_atoi(ft_lstlast(*stack_a)->content))
+	if (*stack_a &&  get_stack_content(*stack_a) > get_stack_content(ft_lstlast(*stack_a)))
 	{
 		rotate(stack_a);
-		if (*stack_b && ft_atoi((*stack_b)->content) < ft_atoi(ft_lstlast(*stack_b)->content))
+		if (*stack_b && get_stack_content(*stack_b) < get_stack_content(ft_lstlast(*stack_b)))
 		{
 			rotate(stack_b);
 			ft_printf("rr\n");			
@@ -67,32 +72,46 @@ void first_order(t_list **stack_a, t_list **stack_b)
 	}
 	else if (*stack_a && (*stack_a)->next)
 	{
-		if (ft_atoi((*stack_a)->content) > ft_atoi((*stack_a)->next->content))
+		if (get_stack_content(*stack_a) > get_stack_content((*stack_a)->next))
 		{
 			swap(stack_a);
-			if (*stack_b && (*stack_b)->next && ft_atoi((*stack_b)->content) < ft_atoi((*stack_b)->next->content))
+			if (*stack_b && (*stack_b)->next && get_stack_content(*stack_b) < get_stack_content((*stack_b)->next))
 			{
 				swap(stack_b);
-				ft_printf("ss\n");			
+				ft_printf("ss\n");
 			}
 			else
 				ft_printf("sa\n");
 		}
 		else
 		{
-			push(stack_a, stack_b);
-			ft_printf("pb\n");
-			if (*stack_b && ft_atoi((*stack_b)->content) < ft_atoi(ft_lstlast(*stack_b)->content))
+			if (*stack_b && get_stack_content(*stack_a) > get_stack_content(ft_lstlast(*stack_b))
+			&& get_stack_content(*stack_a) < get_stack_content(*stack_b))
+			{
+				reverse_rotate(stack_b);
+				ft_printf("rrb\n");
+				push(stack_a, stack_b);
+				ft_printf("pb\n");
+				rotate(stack_b);
+				ft_printf("rb\n");				
+				rotate(stack_b);
+				ft_printf("rb\n");
+			}
+			else {
+				push(stack_a, stack_b);
+				ft_printf("pb\n");
+			}
+			/*if (*stack_b && get_stack_content(*stack_b) < get_stack_content(ft_lstlast(*stack_b)))
 			{
 				rotate(stack_b);
-				if (*stack_b && ft_atoi((*stack_a)->content) > ft_atoi(ft_lstlast(*stack_a)->content))
+				if (*stack_b && get_stack_content(*stack_a) > get_stack_content(ft_lstlast(*stack_a)))
 				{
 					rotate(stack_a);
 					ft_printf("rr\n");	
 				}
 				else
 					ft_printf("rb\n");
-			}
+			}*/
 		}
 	}
 }
@@ -101,13 +120,13 @@ void second_order(t_list **stack_a, t_list **stack_b)
 {
 	if (*stack_a && *stack_b)
 	{
-		if ((*stack_a)->next && ft_atoi((*stack_a)->content) < ft_atoi((*stack_b)->content)
-			&& ft_atoi(((*stack_a)->next)->content) > ft_atoi((*stack_b)->content))
+		if ((*stack_a)->next && get_stack_content(*stack_a) < get_stack_content(*stack_b)
+			&& get_stack_content((*stack_a)->next) > get_stack_content(*stack_b))
 		{
 			push(stack_b, stack_a);			
 			ft_printf("pa\n");
 			swap(stack_a);
-			if (*stack_b && (*stack_b)->next && ft_atoi((*stack_b)->content) < ft_atoi((*stack_b)->next->content))
+			if (*stack_b && (*stack_b)->next && get_stack_content(*stack_b) < get_stack_content((*stack_b)->next))
 			{
 				swap(stack_b);
 				ft_printf("ss\n");			
@@ -115,24 +134,24 @@ void second_order(t_list **stack_a, t_list **stack_b)
 			else
 				ft_printf("sa\n");
 		}
-		else if (ft_atoi((*stack_a)->content) < ft_atoi((*stack_b)->content))
+		else if (get_stack_content(*stack_a) < get_stack_content(*stack_b))
 		{
 			rotate(stack_a);
 			ft_printf("ra\n");
 		}
-		else if (ft_atoi((*stack_a)->content) > ft_atoi((*stack_b)->content)
-			&& ft_atoi(ft_lstlast(*stack_a)->content) < ft_atoi((*stack_b)->content))
+		else if (get_stack_content(*stack_a) > get_stack_content(*stack_b)
+			&& get_stack_content(ft_lstlast(*stack_a)) < get_stack_content(*stack_b))
 		{
 			push(stack_b, stack_a);			
 			ft_printf("pa\n");
 		}
-		else if (ft_atoi(ft_lstlast(*stack_a)->content) < ft_atoi((*stack_a)->content)
-			&& ft_atoi(ft_lstlast(*stack_a)->content) > ft_atoi((*stack_b)->content))
+		else if (get_stack_content(ft_lstlast(*stack_a)) < get_stack_content(*stack_a)
+			&& get_stack_content(ft_lstlast(*stack_a)) > get_stack_content(*stack_b))
 		{
 			reverse_rotate(stack_a);
 			ft_printf("rra\n");
 		}
-		else if (ft_atoi((*stack_a)->content) > ft_atoi((*stack_b)->content))
+		else if (get_stack_content(*stack_a) > get_stack_content(*stack_b))
 		{
 			push(stack_b, stack_a);
 			ft_printf("pa\n");
@@ -156,11 +175,11 @@ int is_stack_ordered(t_list *stack)
 	ptr = stack;
 	while (ptr && ptr->next)
 	{
-		if (ft_atoi(ptr->content) > ft_atoi(ptr->next->content))
-			return (0);
+		if (get_stack_content(ptr) > get_stack_content(ptr->next))
+			return (FALSE);
 		ptr = ptr->next;
 	}
-	return (1);
+	return (TRUE);
 }
 
 int main(int argc, char **argv)
@@ -169,23 +188,26 @@ int main(int argc, char **argv)
 	t_list	*stack_b;
 	
 	stack_b = NULL;
-	if (init_stack(argc, argv, &stack_a) != 1)
-		return (-1);
-//	print_stacks(stack_a, stack_b);
+	if (init_stack(argc, argv, &stack_a) != INIT_SUCCESS)
+		return (INIT_ERROR);
+	//print_stacks(stack_a, stack_b);
 	while(!is_stack_ordered(stack_a))
 	{
 		first_order(&stack_a, &stack_b);
-//		print_stacks(stack_a, stack_b);
+		//ft_printf("\n");
+		//print_stacks(stack_a, stack_b);
 	}
 	while(stack_b)
 	{
 		second_order(&stack_a, &stack_b);
-//		print_stacks(stack_a, stack_b);
+		//ft_printf("\n");
+		//print_stacks(stack_a, stack_b);
 	}
 	while(!is_stack_ordered(stack_a))
 	{
 		third_order(&stack_a);
-	}
+	}	
+	//ft_printf("\n");
 	//print_stacks(stack_a, stack_b);
 	ft_lstclear(&stack_a, &free);
 	ft_lstclear(&stack_b, &free);

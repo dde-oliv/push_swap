@@ -14,28 +14,24 @@
 
 static int is_integer(char *arg)
 {
-	int	i = 0;
+	int	i;
 	size_t len;
+	int minus_sign;
 
-	len = ft_strlen(arg);
-	if(*arg == '-')
-	{
-		len--;
-		i++;
-	}
+	minus_sign = (*arg == '-');
+	len = ft_strlen(arg) - minus_sign;
+	i = minus_sign;
 	while(arg[i] != '\0')
 	{
 		if(!ft_isdigit(arg[i]))
-			return(0);
+			return(FALSE);
 		i++;		
 	}
-	if (len > 10)
-		return (0);
-	else if (*arg != '-' && len == 10 && ft_strcmp(arg, "2147483647") > 0)
-		return (0);
-	else if (*arg == '-' && len == 10 && ft_strcmp(arg, "-2147483648") > 0)
-		return (0);
-	return(1);
+	if ((len > 10)
+			|| (*arg != '-' && len == 10 && ft_strcmp(arg, "2147483647") > 0)
+			|| (*arg == '-' && len == 10 && ft_strcmp(arg, "-2147483648") > 0))
+		return (FALSE);
+	return(TRUE);
 }
 
 static int	is_already_on_list(t_list *lst, void *content)
@@ -45,32 +41,40 @@ static int	is_already_on_list(t_list *lst, void *content)
 	ptr = lst;
 	while (ptr)
 	{
-		if (ft_strcmp(ptr->content, content) == 0)
-			return (1);
+		if (*((int *)(ptr->content)) == ft_atoi(content))
+		{
+			ft_printf("%d %d\n", *((int *)(ptr->content)), ft_atoi(content));
+			return (TRUE);
+		}
 		ptr = ptr->next;
 	}
-	return (0);
+	return (FALSE);
 }
 
 int init_stack(int argc, char **argv, t_list **stack)
 {
 	int		i;
-
+	int *nbr;
+	
 	i = 1;
 	if (argc == 1)
-		return (0);
+		return (NO_ARGS);
 	*stack = NULL;
 	while(argv[i])
 	{
 		if (is_integer(argv[i]) && !is_already_on_list(*stack, argv[i]))
-			ft_lstadd_back(stack, ft_lstnew(ft_strdup(argv[i])));
+		{
+			nbr = malloc(sizeof(int));
+			*nbr = ft_atoi(argv[i]);
+			ft_lstadd_back(stack, ft_lstnew(nbr));
+		}
 		else
 		{
 			ft_lstclear(stack, &free);
 			ft_printf_fd(STDERR_FILENO,"Error\n");
-			return (0);	
+			return (INIT_ERROR);	
 		}
 		i++;
 	}
-	return (1);
+	return (INIT_SUCCESS);
 }

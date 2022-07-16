@@ -15,6 +15,26 @@
 # include "../.dependencies/libft/libft.h"
 # include "../.dependencies/printf/ft_printf.h"
 
+# ifndef NO_ARGS
+#  define NO_ARGS -1
+# endif
+
+# ifndef INIT_ERROR
+#  define INIT_ERROR -1
+# endif
+
+# ifndef INIT_SUCCESS
+#  define INIT_SUCCESS 1
+# endif
+
+# ifndef TRUE
+#  define TRUE 1
+# endif
+
+# ifndef FALSE
+#  define FALSE 0
+# endif
+
 int init_stack(int argc, char **argv, t_list **stack);
 
 #endif
