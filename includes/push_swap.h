@@ -17,4 +17,8 @@
 # include "init_check.h"
 # include "operations.h"
 
+# ifndef BATCH_SIZE
+#  define BATCH_SIZE 3
+# endif
+
 #endif
